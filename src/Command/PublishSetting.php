@@ -15,7 +15,8 @@ class PublishSetting extends BasePublish
 
     public function publishModel()
     {
-        $this->doPublishFile(__DIR__ . '/../Model/Setting.php', app_path('Models/Model/Setting.php'), [
+        $this->softTitle('Publish "<info>models</info>"');
+        $this->doPublishFile(__DIR__ . '/../Model/Setting.php', app_path('Models/Setting.php'), [
             'namespace MaDnh\LaravelSetting\Model;' => 'namespace App\Models;',
             'use MaDnh\LaravelSetting\Observer\SettingObserver;' => 'use App\Observers\SettingObserver;'
         ]);
@@ -23,6 +24,7 @@ class PublishSetting extends BasePublish
 
     public function publishObserver()
     {
+        $this->softTitle('Publish "<info>model observers</info>"');
         $this->doPublishFile(__DIR__ . '/../Observer/SettingObserver.php', app_path('Observers/SettingObserver.php'), [
             'namespace MaDnh\LaravelSetting\Observer;' => 'namespace App\Observers;',
             'use MaDnh\LaravelSetting\Model\Setting;' => 'use App\Models\Setting;'
@@ -31,6 +33,7 @@ class PublishSetting extends BasePublish
 
     public function publishLocale()
     {
+        $this->softTitle('Publish "<info>locale</info>"');
         $this->doPublishFile(__DIR__ . '/../Locale/en.php', resource_path('lang/en/model_setting.php'), [
             'namespace MaDnh\LaravelSetting\Observer;' => 'namespace App\Observers;',
             'use MaDnh\LaravelSetting\Model\Setting;' => 'use App\Models\Setting;'
@@ -39,11 +42,13 @@ class PublishSetting extends BasePublish
 
     public function publishMigration()
     {
+        $this->softTitle('Publish "<info>migration</info>"');
         $this->doPublishFile(__DIR__ . '/../Migration/2017_08_01_103732_create_settings_table.php', base_path('database/migrations/2017_08_01_103732_create_settings_table.php'));
     }
 
     public function publishSettingInit()
     {
+        $this->softTitle('Publish "<info>init settings</info>"');
         $this->doPublishFile(__DIR__ . '/../setting_init.php', config_path('setting_init.php'));
     }
 

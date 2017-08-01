@@ -146,7 +146,7 @@ class Setting extends Model
      * @param null $default
      * @return mixed|null
      */
-    public static function get($name, $default = null)
+    public static function getSetting($name, $default = null)
     {
         $name = strtolower($name);
         $config_name = 'setting.' . $name;
