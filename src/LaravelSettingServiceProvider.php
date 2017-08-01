@@ -15,7 +15,8 @@ class LaravelSettingServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->commands([
-            \MaDnh\LaravelSetting\Command\Setting::class
+            \MaDnh\LaravelSetting\Command\Setting::class,
+            \MaDnh\LaravelSetting\Command\PublishSetting::class
         ]);
     }
 }
