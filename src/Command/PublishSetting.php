@@ -8,31 +8,25 @@ use MaDnh\LaravelSetting\LaravelSettingServiceProvider;
 
 class PublishSetting extends BasePublish
 {
-    protected $signature = 'app:setting.publish {methods?* : Publish methods} {--force : Overwrite any existing files} {--tags= : Publish tags when publish by vendor method}';
+    protected $signature = 'app:setting.publish 
+    {methods?* : Publish methods} 
+    {--force : Overwrite any existing files}
+    {--tags= : Publish tags when publish by vendor method}
+    {--subns= : Sub namespace of setting parts}';
     protected $description = 'Publish setting assets';
 
     protected $serviceProviderClass = LaravelSettingServiceProvider::class;
-    protected $subNamespace = null;
     protected $baseReplace = null;
-
-    protected function getSubNamespace()
-    {
-        if (is_null($this->subNamespace)) {
-            $this->subNamespace = $this->ask('Sub Namespace');
-        }
-
-        return $this->subNamespace;
-    }
 
     protected function getBaseReplace()
     {
         if (!is_array($this->baseReplace)) {
             $replaces = [];
             $httpNamespace = 'App\\Http';
-            $subNamespace = $this->getSubNamespace();
+            $subNamespace = $this->option('subns');
 
             if (!empty($subNamespace)) {
-                $subNamespace = '\\' . $subNamespace;
+                $subNamespace = '\\' . studly_case($subNamespace);
             }
 
             $replaces['DummyControllerNamespace'] = $httpNamespace . '\\Controllers' . $subNamespace;
