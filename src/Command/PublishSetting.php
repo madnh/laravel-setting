@@ -16,19 +16,14 @@ class PublishSetting extends BasePublish
     public function publishModel()
     {
         $this->softTitle('Publish "<info>models</info>"');
-        $this->doPublishFile(__DIR__ . '/../Model/Setting.php', app_path('Models/Setting.php'), [
-            'namespace MaDnh\LaravelSetting\Model;' => 'namespace App\Models;',
-            'use MaDnh\LaravelSetting\Observer\SettingObserver;' => 'use App\Observers\SettingObserver;'
-        ]);
+
+        $this->doPublishDir(__DIR__.'/../../stub/App/Models', app_path('Models'));
     }
 
     public function publishObserver()
     {
         $this->softTitle('Publish "<info>model observers</info>"');
-        $this->doPublishFile(__DIR__ . '/../Observer/SettingObserver.php', app_path('Observers/SettingObserver.php'), [
-            'namespace MaDnh\LaravelSetting\Observer;' => 'namespace App\Observers;',
-            'use MaDnh\LaravelSetting\Model\Setting;' => 'use App\Models\Setting;'
-        ]);
+        $this->doPublishDir(__DIR__.'/../../stub/App/Observers', app_path('Observers'));
     }
 
     public function publishLocale()

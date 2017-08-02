@@ -29,6 +29,10 @@ class Setting extends Model
      */
     public static $temp_make_config = false;
 
+    /**
+     * config name => value type
+     * @var array
+     */
     public static $cast_settings = [
         //'app__name' => 'string',
         //'email__send_from_address' => 'string',
