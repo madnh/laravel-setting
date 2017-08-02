@@ -2,7 +2,7 @@
 
 namespace DummyControllerNamespace;
 
-use DummyModelNameSpace\Setting;
+use DummyModelNamespace\Setting;
 use DummyRequestNamespace\UpdateSettingRequest;
 
 use App\Http\Controllers\Controller;

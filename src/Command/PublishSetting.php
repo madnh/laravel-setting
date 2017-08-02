@@ -21,7 +21,7 @@ class PublishSetting extends BasePublish
 
     protected function getSubNamespace()
     {
-        if (!is_null($this->subNamespace)) {
+        if (is_null($this->subNamespace)) {
             $this->subNamespace = $this->option('subns');
         }
         if (!empty($this->subNamespace)) {
