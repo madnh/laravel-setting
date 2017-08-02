@@ -19,13 +19,13 @@ class PublishSetting extends BasePublish
     protected $baseReplace = null;
     protected $subNamespace = null;
 
-    protected function getSubNamespace()
+    protected function getSubNamespace($prefix = '')
     {
         if (is_null($this->subNamespace)) {
             $this->subNamespace = $this->option('subns');
         }
         if (!empty($this->subNamespace)) {
-            return '\\' . studly_case($this->subNamespace);
+            return $prefix . studly_case($this->subNamespace);
         }
 
         return $this->subNamespace;
@@ -36,7 +36,7 @@ class PublishSetting extends BasePublish
         if (!is_array($this->baseReplace)) {
             $replaces = [];
             $httpNamespace = 'App\\Http';
-            $subNamespace = $this->getSubNamespace();
+            $subNamespace = $this->getSubNamespace('\\');
 
             $replaces['DummyControllerNamespace'] = $httpNamespace . '\\Controllers' . $subNamespace;
             $replaces['DummyRequestNamespace'] = $httpNamespace . $subNamespace;
@@ -56,7 +56,7 @@ class PublishSetting extends BasePublish
 
         $this->doPublishFile(
             __DIR__ . '/../../stub/App/Models/Setting.php',
-            app_path('Models' . $this->getSubNamespace().'/Setting.php'),
+            app_path('Models' . $this->getSubNamespace(DIRECTORY_SEPARATOR) . '/Setting.php'),
             $this->getBaseReplace());
     }
 
@@ -65,7 +65,7 @@ class PublishSetting extends BasePublish
         $this->softTitle('Publish "<info>model observers</info>"');
         $this->doPublishFile(
             __DIR__ . '/../../stub/App/Observers/SettingObserver.php',
-            app_path('Observers' . $this->getSubNamespace().'/SettingObserver.php'),
+            app_path('Observers' . $this->getSubNamespace(DIRECTORY_SEPARATOR) . '/SettingObserver.php'),
             $this->getBaseReplace()
         );
     }
@@ -103,7 +103,7 @@ class PublishSetting extends BasePublish
         $this->softTitle('Publish "<info>controller</info>"');
         $this->doPublishFile(
             __DIR__ . '/../../stub/App/Http/Controllers/SettingController.php',
-            app_path('Http/Controllers' . $this->getSubNamespace() . '/SettingController.php'),
+            app_path('Http/Controllers' . $this->getSubNamespace(DIRECTORY_SEPARATOR) . '/SettingController.php'),
             $this->getBaseReplace()
         );
     }
@@ -113,7 +113,7 @@ class PublishSetting extends BasePublish
         $this->softTitle('Publish "<info>request</info>"');
         $this->doPublishFile(
             __DIR__ . '/../../stub/App/Http/Requests/UpdateSettingRequest.php',
-            app_path('Http/Requests' . $this->getSubNamespace().'/UpdateSettingRequest.php'),
+            app_path('Http/Requests' . $this->getSubNamespace(DIRECTORY_SEPARATOR) . '/UpdateSettingRequest.php'),
             $this->getBaseReplace()
         );
     }
