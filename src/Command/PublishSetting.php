@@ -12,27 +12,58 @@ class PublishSetting extends BasePublish
     protected $description = 'Publish setting assets';
 
     protected $serviceProviderClass = LaravelSettingServiceProvider::class;
+    protected $subNamespace = null;
+    protected $baseReplace = null;
+
+    protected function getSubNamespace()
+    {
+        if (is_null($this->subNamespace)) {
+            $this->subNamespace = $this->ask('Sub Namespace');
+        }
+
+        return $this->subNamespace;
+    }
+
+    protected function getBaseReplace()
+    {
+        if (!is_array($this->baseReplace)) {
+            $replaces = [];
+            $httpNamespace = 'App\\Http';
+            $subNamespace = $this->getSubNamespace();
+
+            if (!empty($subNamespace)) {
+                $subNamespace = '\\' . $subNamespace;
+            }
+
+            $replaces['DummyControllerNamespace'] = $httpNamespace . '\\Controllers' . $subNamespace;
+            $replaces['DummyRequestNamespace'] = $httpNamespace . $subNamespace;
+            $replaces['DummyModelNamespace'] = $httpNamespace . '\\Models' . $subNamespace;
+            $replaces['DummyObserverNamespace'] = 'App\\Observers' . $subNamespace;
+
+            $this->baseReplace = $replaces;
+        }
+
+
+        return $this->baseReplace;
+    }
 
     public function publishModel()
     {
         $this->softTitle('Publish "<info>models</info>"');
 
-        $this->doPublishDir(__DIR__ . '/../../stub/App/Models', app_path('Models'));
+        $this->doPublishDir(__DIR__ . '/../../stub/App/Models', app_path('Models'), $this->getBaseReplace());
     }
 
     public function publishObserver()
     {
         $this->softTitle('Publish "<info>model observers</info>"');
-        $this->doPublishDir(__DIR__ . '/../../stub/App/Observers', app_path('Observers'));
+        $this->doPublishDir(__DIR__ . '/../../stub/App/Observers', app_path('Observers'), $this->getBaseReplace());
     }
 
     public function publishLocale()
     {
         $this->softTitle('Publish "<info>locale</info>"');
-        $this->doPublishFile(__DIR__ . '/../Locale/en.php', resource_path('lang/en/model_setting.php'), [
-            'namespace MaDnh\LaravelSetting\Observer;' => 'namespace App\Observers;',
-            'use MaDnh\LaravelSetting\Model\Setting;' => 'use App\Models\Setting;'
-        ]);
+        $this->doPublishFile(__DIR__ . '/../Locale/en.php', resource_path('lang/en/model_setting.php'), $this->getBaseReplace());
     }
 
     public function publishMigration()
@@ -44,18 +75,18 @@ class PublishSetting extends BasePublish
     public function publishSettingInit()
     {
         $this->softTitle('Publish "<info>init settings</info>"');
-        $this->doPublishFile(__DIR__ . '/../setting_init.php', config_path('setting_init.php'));
+        $this->doPublishFile(__DIR__ . '/../../stub/setting_init.php', config_path('setting_init.php'));
     }
 
     public function publishController()
     {
         $this->softTitle('Publish "<info>controller</info>"');
-        $this->doPublishFile(__DIR__ . '/../../stub/App/Http/Controllers/SettingController.php', app_path('Http/Controllers/SettingController.php'));
+        $this->doPublishFile(__DIR__ . '/../../stub/App/Http/Controllers/SettingController.php', app_path('Http/Controllers/SettingController.php'), $this->getBaseReplace());
     }
 
     public function publishRequest()
     {
         $this->softTitle('Publish "<info>request</info>"');
-        $this->doPublishFile(__DIR__ . '/../../stub/App/Http/Requests/UpdateSettingRequest.php', app_path('Http/Requests/UpdateSettingRequest.php'));
+        $this->doPublishFile(__DIR__ . '/../../stub/App/Http/Requests/UpdateSettingRequest.php', app_path('Http/Requests/UpdateSettingRequest.php'), $this->getBaseReplace());
     }
 }

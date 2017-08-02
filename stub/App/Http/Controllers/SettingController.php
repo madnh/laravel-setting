@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace DummyControllerNamespace;
+
+use MaDnh\LaravelSetting\Model\Setting;
+use DummyRequestNamespace\UpdateSettingRequest;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\UpdateSettingRequest;
-use MaDnh\LaravelSetting\Model\Setting;
 use Illuminate\Http\Request;
 use MaDnh\LaravelDevHelper\Util\ResponseUtil;
 

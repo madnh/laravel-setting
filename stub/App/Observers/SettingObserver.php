@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Observers;
+namespace DummyObserverNamespace;
 
 
 class SettingObserver extends \MaDnh\LaravelSetting\Observer\SettingObserver

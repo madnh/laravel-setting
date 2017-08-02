@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace DummyModelNamespace;
 
 
 class Setting extends \MaDnh\LaravelSetting\Model\Setting

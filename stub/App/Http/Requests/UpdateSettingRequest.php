@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Dashboard;
+namespace DummyRequestNamespace;
 
 use Illuminate\Foundation\Http\FormRequest;
-use MaDnh\LaravelSetting\Model\Setting;
+use DummyModelNamespace\Setting;
 
 class UpdateSettingRequest extends FormRequest
 {
