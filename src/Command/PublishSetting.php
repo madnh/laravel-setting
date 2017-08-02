@@ -8,7 +8,7 @@ use MaDnh\LaravelSetting\LaravelSettingServiceProvider;
 
 class PublishSetting extends BasePublish
 {
-    protected $signature = 'app:setting.publish {methods?* : Publish methods} {--force : Overwrite any existing files} {--tag= : Publish tags when publish by vendor method}';
+    protected $signature = 'app:setting.publish {methods?* : Publish methods} {--force : Overwrite any existing files} {--tags= : Publish tags when publish by vendor method}';
     protected $description = 'Publish setting assets';
 
     protected $serviceProviderClass = LaravelSettingServiceProvider::class;
