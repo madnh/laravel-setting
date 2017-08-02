@@ -2,20 +2,15 @@
 
 namespace DummyControllerNamespace;
 
-use MaDnh\LaravelSetting\Model\Setting;
+use DummyModelNameSpace\Setting;
 use DummyRequestNamespace\UpdateSettingRequest;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use MaDnh\LaravelDevHelper\Util\ResponseUtil;
 
 class SettingController extends Controller
 {
-    public function __construct()
-    {
-
-    }
-    public function index(Request $request)
+    public function index()
     {
         $settings = config('setting');
 

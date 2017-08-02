@@ -3,9 +3,6 @@
 
 namespace MaDnh\LaravelSetting\Observer;
 
-
-use MaDnh\LaravelSetting\Model\Setting;
-
 class SettingObserver
 {
 
@@ -13,19 +10,29 @@ class SettingObserver
     {
         $this->makeConfig();
     }
+
     public function updated()
     {
         $this->makeConfig();
     }
+
     public function deleted()
     {
         $this->makeConfig();
     }
 
+
+    protected function getSettingClass()
+    {
+        return \MaDnh\LaravelSetting\Model\Setting::class;
+    }
+
     protected function makeConfig()
     {
-        if (Setting::$temp_make_config) {
-            Setting::makeConfig();
+        $class = $this->getSettingClass();
+        
+        if ($class::$temp_make_config) {
+            $class::makeConfig();
         }
     }
 }
