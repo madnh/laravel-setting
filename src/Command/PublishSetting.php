@@ -8,7 +8,7 @@ use MaDnh\LaravelSetting\LaravelSettingServiceProvider;
 
 class PublishSetting extends BasePublish
 {
-    protected $signature = 'app:setting.publish {tag?* : Publish tags} {--force : Overwrite any existing files}';
+    protected $signature = 'app:setting.publish {methods?* : Publish methods} {--force : Overwrite any existing files} {--tag= : Publish tags when publish by vendor method}';
     protected $description = 'Publish setting assets';
 
     protected $serviceProviderClass = LaravelSettingServiceProvider::class;
@@ -57,17 +57,5 @@ class PublishSetting extends BasePublish
     {
         $this->softTitle('Publish "<info>request</info>"');
         $this->doPublishFile(__DIR__ . '/../../stub/App/Http/Requests/UpdateSettingRequest.php', app_path('Http/Requests/UpdateSettingRequest.php'));
-    }
-
-
-    public function publishAll()
-    {
-        $this->publishModel();
-        $this->publishObserver();
-        $this->publishLocale();
-        $this->publishMigration();
-        $this->publishSettingInit();
-        $this->publishController();
-        $this->publishRequest();
     }
 }
