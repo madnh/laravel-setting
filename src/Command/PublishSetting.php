@@ -17,13 +17,13 @@ class PublishSetting extends BasePublish
     {
         $this->softTitle('Publish "<info>models</info>"');
 
-        $this->doPublishDir(__DIR__.'/../../stub/App/Models', app_path('Models'));
+        $this->doPublishDir(__DIR__ . '/../../stub/App/Models', app_path('Models'));
     }
 
     public function publishObserver()
     {
         $this->softTitle('Publish "<info>model observers</info>"');
-        $this->doPublishDir(__DIR__.'/../../stub/App/Observers', app_path('Observers'));
+        $this->doPublishDir(__DIR__ . '/../../stub/App/Observers', app_path('Observers'));
     }
 
     public function publishLocale()
@@ -47,6 +47,19 @@ class PublishSetting extends BasePublish
         $this->doPublishFile(__DIR__ . '/../setting_init.php', config_path('setting_init.php'));
     }
 
+    public function publishController()
+    {
+        $this->softTitle('Publish "<info>controller</info>"');
+        $this->doPublishFile(__DIR__ . '/../../stub/App/Http/Controllers/SettingController.php', app_path('Http/Controllers/SettingController.php'));
+    }
+
+    public function publishRequest()
+    {
+        $this->softTitle('Publish "<info>request</info>"');
+        $this->doPublishFile(__DIR__ . '/../../stub/App/Http/Requests/UpdateSettingRequest.php', app_path('Http/Requests/UpdateSettingRequest.php'));
+    }
+
+
     public function publishAll()
     {
         $this->publishModel();
@@ -54,5 +67,7 @@ class PublishSetting extends BasePublish
         $this->publishLocale();
         $this->publishMigration();
         $this->publishSettingInit();
+        $this->publishController();
+        $this->publishRequest();
     }
 }
