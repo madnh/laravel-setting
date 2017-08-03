@@ -35,12 +35,11 @@ class PublishSetting extends BasePublish
     {
         if (!is_array($this->baseReplace)) {
             $replaces = [];
-            $httpNamespace = 'App\\Http';
             $subNamespace = $this->getSubNamespace('\\');
 
-            $replaces['DummyControllerNamespace'] = $httpNamespace . '\\Controllers' . $subNamespace;
-            $replaces['DummyRequestNamespace'] = $httpNamespace . $subNamespace;
-            $replaces['DummyModelNamespace'] = $httpNamespace . '\\Models' . $subNamespace;
+            $replaces['DummyControllerNamespace'] = 'App\\Http\\Controllers' . $subNamespace;
+            $replaces['DummyRequestNamespace'] = 'App\\Http\\Requests' . $subNamespace;
+            $replaces['DummyModelNamespace'] = 'App\\Models' . $subNamespace;
             $replaces['DummyObserverNamespace'] = 'App\\Observers' . $subNamespace;
 
             $this->baseReplace = $replaces;
