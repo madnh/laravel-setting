@@ -2,6 +2,7 @@
 
 namespace DummyModelNamespace;
 
+use DummyObserverNamespace\SettingObserver;
 
 class Setting extends \MaDnh\LaravelSetting\Model\Setting
 {
@@ -20,4 +21,9 @@ class Setting extends \MaDnh\LaravelSetting\Model\Setting
         //'email__send_from_address' => 'nullable|string|email',
         //'app__allow_register' => 'nullable|boolean',
     ];
+
+    protected static function getObserverClass()
+    {
+        return SettingObserver::class;
+    }
 }

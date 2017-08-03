@@ -78,7 +78,12 @@ class Setting extends Model
     {
         parent::boot();
 
-        static::observe(SettingObserver::class);
+        static::observe(static::getObserverClass());
+    }
+
+    protected static function getObserverClass()
+    {
+        return SettingObserver::class;
     }
 
     public static function getCastSettingName($name)
