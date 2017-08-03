@@ -131,7 +131,7 @@ class Setting extends Model
 
         $writeContent = implode("\n", $settings_content);
         $result = file_put_contents($path ?: config_path('setting.php'), $writeContent);
-//        file_put_contents(SettingHelper::instance()->getBackupFile(), $writeContent);
+        file_put_contents(SettingHelper::instance()->getBackupFile(), $writeContent);
 
         \MaDnh\LaravelSetting\SettingHelper::instance()->clearCache($settings);
         \Artisan::call('config:clear');

@@ -29,16 +29,14 @@ class SettingHelper
             if (!file_exists($config_path)) {
                 $this->cache = config('setting' . ($path ? '.' : '') . $path, $default);
             } else {
-//                $config_backup_file = $this->getBackupFile();
+                $config_backup_file = $this->getBackupFile();
 
-//                if (file_exists($config_backup_file)) {
-//                    $this->cache = require($config_backup_file);
-//                    unlink($config_backup_file);
-//                } else {
-//                    $this->cache = require $config_path;
-//                }
-
-                $this->cache = require $config_path;
+                if (file_exists($config_backup_file)) {
+                    $this->cache = require($config_backup_file);
+                    unlink($config_backup_file);
+                } else {
+                    $this->cache = require $config_path;
+                }
             }
         }
         if (empty($path)) {
