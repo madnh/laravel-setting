@@ -12,7 +12,7 @@ if (!function_exists('setting')) {
         static $cache;
 
         if (!$cache) {
-            $config_path = config_path('setting_init.php');
+            $config_path = config_path('setting.php');
 
             if (!file_exists($config_path)) {
                 return config('setting' . ($setting_path ? '.' : '') . $setting_path, $default);
