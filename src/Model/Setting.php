@@ -4,7 +4,6 @@ namespace MaDnh\LaravelSetting\Model;
 
 use MaDnh\LaravelDevHelper\Helper;
 use MaDnh\LaravelSetting\Observer\SettingObserver;
-use File;
 use Config;
 use Illuminate\Database\Eloquent\Model;
 use MaDnh\LaravelModelLabels\LabelsTrait;
@@ -130,11 +129,11 @@ class Setting extends Model
         $settings_content[] = "return " . var_export($settings, true) . ';';
 
         $writeContent = implode("\n", $settings_content);
-        $result = file_put_contents($path ?: config_path('setting.php'), $writeContent);
-        file_put_contents(SettingHelper::instance()->getBackupFile(), $writeContent);
+        $settingFile = config_path('setting.php');
+        $result = file_put_contents($path ?: $settingFile, $writeContent);
 
-        \MaDnh\LaravelSetting\SettingHelper::instance()->clearCache($settings);
-        \Artisan::call('config:clear');
+        SettingHelper::instance()->clearCacheSettingFile($settingFile);
+        SettingHelper::instance()->refresh($settings);
 
         return false !== $result;
     }

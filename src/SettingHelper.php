@@ -6,7 +6,10 @@ namespace MaDnh\LaravelSetting;
 
 class SettingHelper
 {
-    private $cache = null;
+    protected $loaded = false;
+    protected $repository;
+
+
     protected static $instance;
 
     /**
@@ -21,30 +24,61 @@ class SettingHelper
         return self::$instance;
     }
 
-    public function get($path, $default = null)
+    public function clearCacheSettingFile($settingFile = null)
     {
-        if (is_null($this->cache)) {
-            $config_path = config_path('setting.php');
-
-            if (!file_exists($config_path)) {
-                $this->cache = config('setting' . ($path ? '.' : '') . $path, $default);
-            } else {
-                $config_backup_file = $this->getBackupFile();
-
-                if (file_exists($config_backup_file)) {
-                    $this->cache = require($config_backup_file);
-                    unlink($config_backup_file);
-                } else {
-                    $this->cache = require $config_path;
-                }
-            }
+        if (function_exists('opcache_invalidate')) {
+            @opcache_invalidate($settingFile ? $settingFile : $this->getSettingFilePath());
         }
-        if (empty($path)) {
-            return $this->cache;
+    }
+
+    protected function loadSetting()
+    {
+        if ($this->loaded) {
+            return;
         }
 
+        $config = $this->getConfigInstance();
 
-        return array_get($this->cache, $path, $default);
+        if ($config->has('setting')) {
+            return;
+        }
+
+        $settingFile = $this->getSettingFilePath();
+
+        $this->clearCacheSettingFile($settingFile);
+
+        $config->set('setting', require $settingFile);
+
+        //Since setting file is request it may be cached by OPCache
+        //Clear it's cache before Config load setting file
+        $this->clearCacheSettingFile($settingFile);
+
+        $this->loaded = true;
+    }
+
+    /**
+     * @return \Illuminate\Config\Repository
+     */
+    protected function getConfigInstance()
+    {
+        return app('config');
+    }
+
+    protected function getSettingFilePath()
+    {
+        return config_path('setting.php');
+    }
+
+    protected function getSettingFullPath($setting = '')
+    {
+        return 'setting' . ($setting ? '.' . $setting : '');
+    }
+
+    public function get($setting = '', $default = null)
+    {
+        $this->loadSetting();
+
+        return $this->getConfigInstance()->get($this->getSettingFullPath($setting), $default);
     }
 
     /**
@@ -54,18 +88,17 @@ class SettingHelper
      */
     public function has($setting)
     {
-        $specialValue = time() . str_random(10);
+        $this->loadSetting();
 
-        return $specialValue !== $this->get($setting, $specialValue);
+        return $this->getConfigInstance()->has($this->getSettingFullPath($setting));
     }
 
-    public function clearCache($newSettings = null)
+    public function refresh($newSettings = null)
     {
-        $this->cache = $newSettings;
+        $this->loadSetting();
+        $this->loaded = false;
+
+        $this->getConfigInstance()->set($this->getSettingFilePath(), $newSettings);
     }
 
-    public function getBackupFile()
-    {
-        return storage_path('logs' . DIRECTORY_SEPARATOR . 'setting_backup.php');
-    }
 }
