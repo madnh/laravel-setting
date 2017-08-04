@@ -17,20 +17,22 @@ class Setting extends BaseCommand
 
     protected $actions = [
         'dump' => ['Show settings detail', 'dumpSetting'],
-        'init' => ['Init system settings', 'initSetting'],
-        'post' => ['Post settings from config/setting_init.php to DB', 'postSetting'],
-        'make' => ['Write settings to config/setting_init.php file', 'makeConfig']
+        'post' => ['Post settings from setting file (default is `config/setting.php`) to DB', 'postSetting'],
+        'make' => ['Write settings from DB to setting file (default is `config/setting.php`)', 'makeConfig'],
+        'init' => ['Clean DB, do `post` then `make`', 'initSetting'],
     ];
 
     public function handle()
     {
         $action = $this->argument('action');
 
-        if (array_key_exists($action, $this->actions)) {
-            call_user_func([$this, $this->actions[$action][1]]);
-        } else {
+        if (!array_key_exists($action, $this->actions)) {
             throw new \Exception("Invalid action, only supports:\n" . strip_tags($this->actionList()));
         }
+
+        call_user_func([$this, $this->actions[$action][1]]);
+
+        $this->info("\n\nComplete!");
     }
 
     protected function actionList()
@@ -51,27 +53,34 @@ class Setting extends BaseCommand
     protected function getOptions()
     {
         return [
-            ['name', null, InputOption::VALUE_OPTIONAL, 'Setting name, optional, use with "<comment>get</comment>" action. If missing then dump all of settings'],
-            ['file', null, InputOption::VALUE_OPTIONAL, 'File to load init settings, use in init action']
+            ['name', null, InputOption::VALUE_IS_ARRAY | InputOption::VALUE_REQUIRED, 'Setting name, use with "<comment>dump</comment>" action. If not specified then dump all of settings'],
+            ['file', null, InputOption::VALUE_REQUIRED, 'File to load init settings, use in "<comment>init</comment>" and <comment>make</comment> actions']
         ];
     }
 
 
     protected function dumpSetting()
     {
+        $this->softBanner('System settings');
+
         $name = $this->option('name');
 
         if (empty($name)) {
-            $this->softBanner('System settings');
             dump(setting());
-        } else {
-            $this->softBanner('System setting for "<info>' . $name . '</info>"');
 
-            if (!hasSetting($name)) {
-                throw new \Exception('Setting not exists');
+            return;
+        }
+
+        foreach ($name as $setting) {
+            if (!hasSetting($setting)) {
+                try {
+                    throw new \Exception('Setting not exists: ' . $setting);
+                } catch (\Exception $e) {
+                    //
+                }
             }
 
-            dump(setting($name));
+            dump(setting($setting));
         }
     }
 
