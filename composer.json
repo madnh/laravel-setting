@@ -4,8 +4,7 @@
   "type": "library",
   "require": {
     "laravel/framework": "~5.2",
-    "madnh/laravel-dev-helper": "dev-master",
-    "madnh/laravel-model-labels": "^0.3.0"
+    "madnh/laravel-dev-helper": "dev-master"
   },
   "license": "MIT",
   "authors": [

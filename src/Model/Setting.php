@@ -6,14 +6,10 @@ use MaDnh\LaravelDevHelper\Helper;
 use MaDnh\LaravelSetting\Observer\SettingObserver;
 use Config;
 use Illuminate\Database\Eloquent\Model;
-use MaDnh\LaravelModelLabels\LabelsTrait;
 use MaDnh\LaravelSetting\SettingHelper;
 
 class Setting extends Model
 {
-    use LabelsTrait;
-
-
     protected $table = 'settings';
 
     protected $primaryKey = 'name';

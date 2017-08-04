@@ -12,9 +12,9 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $settings = config('setting');
+        $settings = setting();
 
-        return view('dashboard.settings.form', [
+        return view('settings.form', [
             'settings' => $settings
         ]);
     }
@@ -24,8 +24,8 @@ class SettingController extends Controller
         $settings = $request->only(Setting::getSupportSettings());
         Setting::updateSettings($settings);
 
-        return ResponseUtil::redirect(route('dashboard.setting_form'), [
-            'message' => trans('message.update_successfully', ['target' => trans('model_setting.model')]),
+        return ResponseUtil::redirect(route('setting_form'), [
+            'message' => 'Update system setting success',
             'message_type' => 'success'
         ]);
     }

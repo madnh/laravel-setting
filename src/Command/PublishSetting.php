@@ -5,19 +5,22 @@ namespace MaDnh\LaravelSetting\Command;
 
 use MaDnh\LaravelDevHelper\Command\BasePublish;
 use MaDnh\LaravelSetting\LaravelSettingServiceProvider;
+use Symfony\Component\Console\Input\InputOption;
 
 class PublishSetting extends BasePublish
 {
-    protected $signature = 'app:setting.publish 
-    {methods?* : Publish methods} 
-    {--force : Overwrite any existing files}
-    {--tags= : Publish tags when publish by vendor method}
-    {--subns= : Sub namespace of setting parts}';
-    protected $description = 'Publish setting assets';
+    protected $name = 'app:setting.publish';
+    protected $description = 'Publish setting parts';
 
     protected $serviceProviderClass = LaravelSettingServiceProvider::class;
     protected $baseReplace = null;
     protected $subNamespace = null;
+
+    protected function getOptions()
+    {
+        $options = parent::getOptions();
+        $options[] = ['subns', null, InputOption::VALUE_OPTIONAL, 'Sub namespace of setting parts'];
+    }
 
     protected function getSubNamespace($prefix = '')
     {
@@ -65,16 +68,6 @@ class PublishSetting extends BasePublish
         $this->doPublishFile(
             __DIR__ . '/../../stub/App/Observers/SettingObserver.php',
             app_path('Observers' . $this->getSubNamespace(DIRECTORY_SEPARATOR) . '/SettingObserver.php'),
-            $this->getBaseReplace()
-        );
-    }
-
-    public function publishLocale()
-    {
-        $this->softTitle('Publish "<info>locale</info>"');
-        $this->doPublishFile(
-            __DIR__ . '/../Locale/en.php',
-            resource_path('lang/en/model_setting.php'),
             $this->getBaseReplace()
         );
     }

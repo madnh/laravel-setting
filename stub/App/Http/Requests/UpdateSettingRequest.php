@@ -30,6 +30,8 @@ class UpdateSettingRequest extends FormRequest
      */
     public function attributes()
     {
-        return Setting::labels();
+        return [
+            //
+        ];
     }
 }
