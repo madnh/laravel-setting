@@ -20,6 +20,8 @@ class PublishSetting extends BasePublish
     {
         $options = parent::getOptions();
         $options[] = ['subns', null, InputOption::VALUE_OPTIONAL, 'Sub namespace of setting parts'];
+
+        return $options;
     }
 
     protected function getSubNamespace($prefix = '')
