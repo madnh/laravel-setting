@@ -3,8 +3,8 @@
   "description": "Simple setting for Laravel application",
   "type": "library",
   "require": {
-    "laravel/framework": "~5.2",
-    "madnh/laravel-dev-helper": "dev-master"
+    "laravel/framework": ">=5.2",
+    "madnh/laravel-dev-helper": ">=1.0"
   },
   "license": "MIT",
   "authors": [
@@ -20,6 +20,5 @@
     "files": [
       "src/functions.php"
     ]
-  },
-  "minimum-stability": "dev"
+  }
 }
